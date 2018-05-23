@@ -61,10 +61,10 @@ namespace AzureLearning.Controllers
         private void DeleteEmployee(string id)
         {
             var empTable = Employee.GetTable();
-            var employee = empTable.CreateQuery<Employee>().FirstOrDefault(emp => emp.RowKey == id);
-            if(employee != null)
+            var employee = empTable.CreateQuery<Employee>().Where(emp => emp.RowKey == id).ToList();
+            if(employee.Count > 0)
             {
-                var delete = TableOperation.Delete(employee);
+                var delete = TableOperation.Delete(employee.First());
                 empTable.Execute(delete);
             }
 
